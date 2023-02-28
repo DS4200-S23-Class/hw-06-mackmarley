@@ -3,6 +3,22 @@ body {
 	width: 100%;
 }
 
-.column {
-	width: 33%;
+
+
+
+.centered{
+	text-align: center;
 }
+
+.flex-row {
+	display: flex;
+	flex-direction: row;
+
+}
+
+.flex-column {
+	display: flex;
+	flex: 33.33%;
+	flex-direction: column;
+}
+
