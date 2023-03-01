@@ -22,90 +22,135 @@ const FRAME3 = d3.select("#vis3")
             .attr("class", "frame");
 
 
-function builtplot(){
-    d3.csv("data/iris.csv").then((data) => {
 
-        //scatter plot 1
-    	 const MAX_X_1 = d3.max(data, (d) => { return parseInt(d.Petal_Length); });
-         const MAX_Y_1 = d3.max(data, (d) => { return parseInt(d.Sepal_Length); });
+//FIRST SCATTER PLOT
+const xscale1 = (coord) => coord * 40;
+const yscale1 = (coord) => coord * 40;
 
 
-    	const X_SCALE_1 = d3.scaleLinear() 
-                         .domain([0, (MAX_X_1 + 1)]) 
-                          .range([0, VIS_WIDTH]);
-        const Y_SCALE_1 = d3.scaleLinear()
-                             .domain([ 0, MAX_Y_1 + 1])
-                             .range([VIS_HEIGHT, 0]);
+const color = (d) => {
+            if (d.Species === "setosa") {
+                 return "gray";
+                } else if (d.Species === "versicolor") {
+                return "slateblue";
+                } else {
+                 return "teal";
+                    }
+                    };
 
-        const colors = d3.scaleOrdinal().domain(data).range("darkblue", "teal", "orange");
-        
-        const circles = FRAME1.select("points")
+d3.csv("data/iris.csv").then((data) => {
+
+        //scatter plot 
+    	      
+        FRAME1.selectAll("circle")
         	.data(data)
         	.enter()
         	.append("circle")
-        	.attr("cx", (d) => { return (X_SCALE_1(d.Petal_Length) + MARGINS.left)})
-        	.attr("cy", (d) => { return (Y_SCALE_1(d.Sepal_Length) + MARGINS.right)})
+        	.attr("cx", (d) => xscale1(d.Petal_Length))
+        	.attr("cy", (d) => 400 - yscale1(d.Sepal_Length))
         	.attr("r", 4)
-        	.attr("id", (d) => {
-        		return d.id
-        	})
-        	.attr("opacity", "50%")
-        	.attr("fill", function(d){return colors(d.Species)})
-        	.attr("opacity", "50%");
-
-        FRAME1.append("g")
-        		.attr("transform", "translate(" + MARGINS.left +
-        			"," + (VIS_HEIGHT + MARGINS.top) + ")")
-        		.call(d3.axisBottom(X_SCALE_1).ticks(8))
-        		.attr("font-size", "10px");
-
-        FRAME1.append("g")
-        		.attr("transform", "translate(" + MARGINS.left +
-        			"," + MARGINS.top + ")")
-        		.call(d3.axisLeft(Y_SCALE_1).ticks(7))
-        		.attr("font-size", "10px");
+            .attr("fill",  (d) => color(d))
+            .attr("opacity", "50%")
+        	.attr("id", (d) => `circle-${d.id}`);
 
 
-        //scatter plot 2
-         const MAX_X_2 = d3.max(data, (d) => { return parseInt(d.Petal_Width); });
-         const MAX_Y_2 = d3.max(data, (d) => { return parseInt(d.Sepal_Wodth); });
+
+        //scales
+        // const MAX_X_1 = d3.max(data, (d) => { return parseInt(d.Petal_Length); });
+        // const MAX_Y_1 = d3.max(data, (d) => { return parseInt(d.Sepal_Length); });
+        // const X_SCALE_1 = d3.scaleLinear() 
+        //             .domain([0, (MAX_X_1 + 1)]) 
+        //             .range([0, VIS_WIDTH]);
+        // const Y_SCALE_1 = d3.scaleLinear()
+        //             .domain([ 0, MAX_Y_1 + 1])
+        //             .range([VIS_HEIGHT, 0]);
+        // FRAME1.append("g")
+        //      .attr("transform", "translate(" + MARGINS.left +
+        //          "," + (VIS_HEIGHT + MARGINS.top) + ")")
+        //      .call(d3.axisBottom(X_SCALE_1).ticks(8))
+        //      .attr("font-size", "10px");
+
+        // FRAME1.append("g")
+        //      .attr("transform", "translate(" + MARGINS.left +
+        //          "," + MARGINS.top + ")");
 
 
-        const X_SCALE_2 = d3.scaleLinear() 
-                         .domain([0, (MAX_X_2 + 1)])  
-                          .range([0, VIS_WIDTH]);
-        const Y_SCALE_2 = d3.scaleLinear()
-                             .domain([ 0, MAX_Y_2 + 1])
-                             .range([VIS_HEIGHT, 0]);
+         	});
 
-        const circles2 = FRAME1.select("points")
+
+//SECOND SCATTER PLOT
+const xscale2 = (coord) => coord * 140;
+const yscale2 = (coord) => coord * 80;
+
+
+const handleMouseover = (event, d) => {
+  const id = d.id;
+  const species = d.Species;
+  const element = FRAME1.select(`#circle-${id}`);
+  element.style("opacity", "100%")
+  element.style("stroke", "orange")
+  element.style("stroke-width", "2px")
+  let bar = FRAME3.select('#rect-1');
+  if (species === "versicolor") {
+    bar = FRAME3.select('#rect-2');
+  } else if (species === "virginica") {
+    bar = FRAME3.select('#rect-3');
+  }
+  bar.style("stroke", "orange");
+  bar.style("stroke-width", "3px");
+  
+}
+
+
+d3.csv("data/iris.csv").then((data) => {
+
+        //scatter plot
+              
+        FRAME2.selectAll("circle")
             .data(data)
             .enter()
             .append("circle")
-            .attr("cx", (d) => { return (X_SCALE_2(d.Petal_Width) + MARGINS.left)})
-            .attr("cy", (d) => { return (Y_SCALE_2(d.Sepal_Width) + MARGINS.right)})
+            .attr("cx", (d) => xscale2(d.Petal_Width))
+            .attr("cy", (d) => 400 - yscale2(d.Sepal_Width))
             .attr("r", 4)
-            .attr("id", (d) => {
-                return d.id
-            })
+            .attr("fill",  (d) => color(d))
             .attr("opacity", "50%")
-            .attr("fill", function(d){return colors(d.Species)})
-            .attr("opacity", "50%");
+            .attr("id", (d) => `circle-${d.id}`)
+            .on("mouseover", handleMouseover);
+
+    });
+
 
         
 
-        FRAME2.append("g") 
-          .attr("transform", "translate(" + MARGINS.left + 
-                "," + (VIS_HEIGHT + MARGINS.top) + ")") 
-          .call(d3.axisBottom(X_SCALE_2).ticks(10)) 
-            .attr("font-size", '10px');
+
+//         //scatter plot 2
+//          const MAX_X_2 = d3.max(data, (d) => { return parseInt(d.Petal_Width); });
+//          const MAX_Y_2 = d3.max(data, (d) => { return parseInt(d.Sepal_Wodth); });
 
 
-        FRAME2.append("g")
-                .attr("transform", "translate(" + MARGINS.left +
-                    "," + MARGINS.top + ")")
-                .call(d3.axisLeft(Y_SCALE_2).ticks(15))
-                .attr("font-size", "10px");
+//         const X_SCALE_2 = d3.scaleLinear() 
+//                          .domain([0, (MAX_X_2 + 1)])  
+//                           .range([0, VIS_WIDTH]);
+//         const Y_SCALE_2 = d3.scaleLinear()
+//                              .domain([ 0, MAX_Y_2 + 1])
+//                              .range([VIS_HEIGHT, 0]);
+
+//   
+        
+
+//         FRAME2.append("g") 
+//           .attr("transform", "translate(" + MARGINS.left + 
+//                 "," + (VIS_HEIGHT + MARGINS.top) + ")") 
+//           .call(d3.axisBottom(X_SCALE_2).ticks(10)) 
+//             .attr("font-size", '10px');
+
+
+//         FRAME2.append("g")
+//                 .attr("transform", "translate(" + MARGINS.left +
+//                     "," + MARGINS.top + ")")
+//                 .call(d3.axisLeft(Y_SCALE_2).ticks(15))
+//                 .attr("font-size", "10px");
 
         //bar chart
 
@@ -127,17 +172,17 @@ function builtplot(){
 
       const colorsbar = d3.scaleOrdinal().domain(bardata).range(["darkblue", "teal", "orange"])
 
-    const g = FRAME3.append("g")
-               .attr("transform", "translate(" + MARGINS.top + "," + MARGINS.left + ")");
-    g.append("g")
-     .attr("transform", "translate(0," + VIS_HEIGHT + ")")
-     .call(d3.axisBottom(X_SCALE_3));
+    // const g = FRAME3.append("g")
+    //            .attr("transform", "translate(" + MARGINS.top + "," + MARGINS.left + ")");
+    // g.append("g")
+    //  .attr("transform", "translate(0," + VIS_HEIGHT + ")")
+    //  .call(d3.axisBottom(X_SCALE_3));
 
-    g.append("g")
-     .call(d3.axisLeft(Y_SCALE_3).ticks(10))
-        .attr("font-size", "10px");
+    // g.append("g")
+    //  .call(d3.axisLeft(Y_SCALE_3).ticks(10))
+    //     .attr("font-size", "10px");
 
-bars = g.selectAll()
+bars = FRAME3.selectAll()
      .data(bardata)
      .enter()
      .append("rect")
@@ -152,6 +197,5 @@ bars = g.selectAll()
 
 
 
-})}
 
-builtplot()
+

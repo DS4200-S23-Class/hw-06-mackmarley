@@ -22,3 +22,8 @@ body {
 	flex-direction: column;
 }
 
+.frame{
+  border-left: 3px solid black;
+  border-bottom: 3px solid black;
+  margin: 0px 35px;
+}
