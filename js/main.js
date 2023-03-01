@@ -1,3 +1,4 @@
+
 const FRAME_HEIGHT = 400;
 const FRAME_WIDTH = 400;
 const MARGINS = {left: 40, right: 40, top: 40, bottom: 40};
@@ -55,24 +56,7 @@ d3.csv("data/iris.csv").then((data) => {
 
 
 
-        //scales
-        // const MAX_X_1 = d3.max(data, (d) => { return parseInt(d.Petal_Length); });
-        // const MAX_Y_1 = d3.max(data, (d) => { return parseInt(d.Sepal_Length); });
-        // const X_SCALE_1 = d3.scaleLinear() 
-        //             .domain([0, (MAX_X_1 + 1)]) 
-        //             .range([0, VIS_WIDTH]);
-        // const Y_SCALE_1 = d3.scaleLinear()
-        //             .domain([ 0, MAX_Y_1 + 1])
-        //             .range([VIS_HEIGHT, 0]);
-        // FRAME1.append("g")
-        //      .attr("transform", "translate(" + MARGINS.left +
-        //          "," + (VIS_HEIGHT + MARGINS.top) + ")")
-        //      .call(d3.axisBottom(X_SCALE_1).ticks(8))
-        //      .attr("font-size", "10px");
-
-        // FRAME1.append("g")
-        //      .attr("transform", "translate(" + MARGINS.left +
-        //          "," + MARGINS.top + ")");
+      
 
 
          	});
@@ -121,38 +105,7 @@ d3.csv("data/iris.csv").then((data) => {
     });
 
 
-        
 
-
-//         //scatter plot 2
-//          const MAX_X_2 = d3.max(data, (d) => { return parseInt(d.Petal_Width); });
-//          const MAX_Y_2 = d3.max(data, (d) => { return parseInt(d.Sepal_Wodth); });
-
-
-//         const X_SCALE_2 = d3.scaleLinear() 
-//                          .domain([0, (MAX_X_2 + 1)])  
-//                           .range([0, VIS_WIDTH]);
-//         const Y_SCALE_2 = d3.scaleLinear()
-//                              .domain([ 0, MAX_Y_2 + 1])
-//                              .range([VIS_HEIGHT, 0]);
-
-//   
-        
-
-//         FRAME2.append("g") 
-//           .attr("transform", "translate(" + MARGINS.left + 
-//                 "," + (VIS_HEIGHT + MARGINS.top) + ")") 
-//           .call(d3.axisBottom(X_SCALE_2).ticks(10)) 
-//             .attr("font-size", '10px');
-
-
-//         FRAME2.append("g")
-//                 .attr("transform", "translate(" + MARGINS.left +
-//                     "," + MARGINS.top + ")")
-//                 .call(d3.axisLeft(Y_SCALE_2).ticks(15))
-//                 .attr("font-size", "10px");
-
-        //bar chart
 
         
     const bardata = [
@@ -172,15 +125,6 @@ d3.csv("data/iris.csv").then((data) => {
 
       const colorsbar = d3.scaleOrdinal().domain(bardata).range(["darkblue", "teal", "orange"])
 
-    // const g = FRAME3.append("g")
-    //            .attr("transform", "translate(" + MARGINS.top + "," + MARGINS.left + ")");
-    // g.append("g")
-    //  .attr("transform", "translate(0," + VIS_HEIGHT + ")")
-    //  .call(d3.axisBottom(X_SCALE_3));
-
-    // g.append("g")
-    //  .call(d3.axisLeft(Y_SCALE_3).ticks(10))
-    //     .attr("font-size", "10px");
 
 bars = FRAME3.selectAll()
      .data(bardata)
@@ -192,6 +136,8 @@ bars = FRAME3.selectAll()
         .attr('height', function(d) { return VIS_HEIGHT - Y_SCALE_3(d.count); })
         .attr('fill', function(d) {return colorsbar(d.species)})
         .attr("opacity", "50%");
+
+
 
 
 
